@@ -1,17 +1,3 @@
 {
-  "version": 2,
-  "rewrites": [
-    {
-      "source": "/css/(.*)",
-      "destination": "/public/css/$1"
-    },
-    {
-      "source": "/fonts/(.*)",
-      "destination": "/public/fonts/$1"
-    },
-    {
-      "source": "/books.json",
-      "destination": "/public/books.json"
-    }
-  ]
+  "version": 2
 }
