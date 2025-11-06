@@ -1,28 +1,3 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "app-vercel.rb",
-      "use": "@vercel/ruby"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "/fonts/(.*)",
-      "dest": "/public/fonts/$1"
-    },
-    {
-      "src": "/books.json",
-      "dest": "/public/books.json"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/app-vercel.rb"
-    }
-  ]
+  "version": 2
 }
-
