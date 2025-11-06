@@ -46,8 +46,15 @@
 
         // Load and render books
         fetch('/books.json')
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Failed to load books.json: ' + response.status);
+                }
+                return response.json();
+            })
             .then(books => {
+                console.log('Loaded books:', books.length);
                 const container = document.getElementById('bookshelf');
                 container.innerHTML = '';
 
@@ -96,7 +103,14 @@
             })
             .catch(error => {
                 console.error('Error loading books:', error);
-                document.getElementById('bookshelf').innerHTML = '<h1>Error loading bookshelf</h1>';
+                document.getElementById('bookshelf').innerHTML = `
+                    <div style="padding: 20px; text-align: center;">
+                        <h1>Error loading bookshelf</h1>
+                        <p style="color: #ff6b6b;">${error.message}</p>
+                        <p>Check the console for more details (F12)</p>
+                        <p>Trying to load from: <code>${window.location.origin}/books.json</code></p>
+                    </div>
+                `;
             });
     </script>
 </body>

@@ -60,3 +60,9 @@ desktop.ini
 !public/css/
 !public/fonts/
 !public/books.json
+
+# Root directory files for Vercel
+!index.html
+!books.json
+!css/
+!fonts/
