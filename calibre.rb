@@ -1,5 +1,11 @@
 require 'sqlite3'
-require 'rmagick'
+begin
+  require 'mini_magick'
+  HAS_IMAGEMAGICK = true
+rescue LoadError
+  HAS_IMAGEMAGICK = false
+  puts "Warning: ImageMagick not available. Book colors and aspect ratios will use defaults."
+end
 
 class CalibreBook
   def self.connect(path_to_calibre_db)
@@ -119,16 +125,36 @@ class CalibreBook
 
   def cover_color
     return @cover_color unless @cover_color.nil?
-    img =  Magick::Image.read(self.cover).first
-    height = img.base_rows
-    img_small = img.resize(0.1)
-    color = img_small.pixel_color(2,img.base_rows*0.025)
-    @cover_color = color.to_color(Magick::AllCompliance, false, 8, true)
+    return @cover_color = "#8B4513" unless HAS_IMAGEMAGICK  # Default brown color
+    begin
+      # Extract dominant color by sampling the left edge (spine area) of the cover
+      # Take a thin vertical strip from the left edge and get its average color
+      result = MiniMagick::Tool::Convert.new do |convert|
+        convert << self.cover
+        convert.gravity "West"  # Focus on left edge (spine)
+        convert.crop "5x100%+0+0"  # Take 5px wide strip from left edge
+        convert.scale "1x1!"  # Scale to 1 pixel (averages all colors)
+        convert << "txt:-"  # Output as text format
+      end
+      
+      # Parse the output to extract RGB values
+      # Format: "0,0: (R,G,B) #HEXCOLOR ..."
+      if result =~ /\((\d+),(\d+),(\d+)/
+        r, g, b = $1.to_i, $2.to_i, $3.to_i
+        @cover_color = "#%02x%02x%02x" % [r, g, b]
+      else
+        @cover_color = "#8B4513"
+      end
+    rescue => e
+      puts "Color extraction failed for #{self.title}: #{e.message}"
+      @cover_color = "#8B4513"  # Fallback to brown
+    end
     return @cover_color
   end
 
   def cover_contrast
     return @cover_contrast unless @cover_contrast.nil?
+    return @cover_contrast = "#eee" unless HAS_IMAGEMAGICK  # Default light text
     color_string = self.cover_color
     red = color_string[1..2].to_i(16)
     green = color_string[3..4].to_i(16)
@@ -143,10 +169,13 @@ class CalibreBook
   end
 
   def aspect_ratio
-    img =  Magick::Image.read(self.cover).first
-    height = img.base_rows
-    width = img.base_columns
-    return width.to_f/height
+    return 0.67 unless HAS_IMAGEMAGICK  # Default typical book aspect ratio
+    begin
+      img = MiniMagick::Image.open(self.cover)
+      return img.width.to_f / img.height.to_f
+    rescue => e
+      return 0.67  # Fallback to default
+    end
   end
 
   def file_path
@@ -165,7 +194,8 @@ class CalibreBook
 
   def page_count
     return 300 if @@pagecount_column.nil?
-    @page_count ||= @@db.execute("select value from custom_column_#{@@pagecount_column} where book=#{@id}").first.first
+    result = @@db.execute("select value from custom_column_#{@@pagecount_column} where book=#{@id}")
+    @page_count ||= result.empty? ? 300 : result.first.first
   end
 
   def nonlinear_thickness

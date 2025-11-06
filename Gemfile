@@ -11,6 +11,7 @@ gem "sinatra", "~> 4.0.0"
 gem "puma", "~> 6.4"
 
 
-gem "sqlite3", "~> 2.0"
+gem "sqlite3", "~> 1.7"
 
-gem "rmagick", "~> 6.0"
+# Use mini_magick instead of rmagick - works with ImageMagick via CLI, no compilation needed
+gem "mini_magick", "~> 4.12"

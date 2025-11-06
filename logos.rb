@@ -11,7 +11,12 @@
 # spine color is dark, we use the `-white.png` file.
 
 require 'csv'
-require 'rmagick'
+begin
+  require 'mini_magick'
+  HAS_IMAGEMAGICK = true
+rescue LoadError
+  HAS_IMAGEMAGICK = false
+end
 
 class BookLogo
       @@logos=[]
@@ -49,13 +54,15 @@ class BookLogo
   end
 
   def columns
-    @img ||= Magick::Image.read("public#{white}").first
-    @img.base_columns
+    return 100 unless HAS_IMAGEMAGICK  # Default width
+    @img ||= MiniMagick::Image.open("public#{white}")
+    @img.width
   end
 
   def rows
-    @img ||= Magick::Image.read("public#{white}").first
-    @img.base_rows
+    return 100 unless HAS_IMAGEMAGICK  # Default height
+    @img ||= MiniMagick::Image.open("public#{white}")
+    @img.height
   end
 
   # pass the desired color, should be the output of CalibreBook::cover_contrast

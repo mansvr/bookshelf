@@ -1,0 +1,33 @@
+🎉 YOUR 3D BOOKSHELF IS RUNNING!
+
+✅ Ruby Backend: http://localhost:4567 (Running)
+✅ React Frontend: http://localhost:3000 (Running)
+
+🌐 OPEN YOUR BROWSER TO:
+   http://localhost:3000
+
+🎮 CONTROLS:
+   🖱️  Drag to rotate camera
+   🔍 Scroll to zoom in/out
+   👆 Click books to view details
+   ☀️/🌙 Toggle light/dark theme
+
+📚 FEATURES:
+   • 21° dramatic FOV camera (cinematic!)
+   • Full 3D navigation
+   • Real book colors from Calibre
+   • Interactive book details
+   • Circular book arrangement
+
+💡 TIP: You should see TWO PowerShell windows:
+   1. Ruby Backend (port 4567)
+   2. React Frontend (port 3000)
+   
+   Keep both windows open while using the app!
+
+🛑 TO STOP:
+   Close both PowerShell windows
+   OR press Ctrl+C in each window
+
+🚀 ENJOY YOUR 3D BOOKSHELF!
+

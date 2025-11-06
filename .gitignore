@@ -1,3 +1,62 @@
+# Calibre database (local only)
+metadata.db
+metadata.db-journal
+*.db
+*.db-journal
+
+# Credentials
+google-drive-credentials.json
+rclone.conf
+.rclone.conf
+
+# Local book files (too large for Git)
+D:/
+*.pdf
+*.epub
+*.mobi
+
+# Covers (stored in Drive, not Git)
+covers/
+**/covers/
+
+# Ruby
+.bundle/
+vendor/bundle/
+Gemfile.lock
+
+# Node
+node_modules/
+.next/
+.vercel/
+package-lock.json
+
+# Temp files
+temp_sync/
+*.tmp
+*.log
+
+# Executables
+rclone.exe
+
+# Setup scripts (keep deployment scripts)
+check_prerequisites.ps1
+fix_sqlite3.ps1
+setup_and_install*.ps1
+run_bookshelf.ps1
+
+# OS files
 .DS_Store
-public/logos/*.png
-logos.csv
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Keep these
+!public/
+!public/css/
+!public/fonts/
+!public/books.json
