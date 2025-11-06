@@ -73,9 +73,9 @@
                     bookDiv.style.setProperty('--thickness', nonlinearThickness + 'px');
 
                     bookDiv.innerHTML = `
-                        <img class="cover" src="${book.cover_url}" 
-                             style="width: 200px; height: ${bookHeight}px; transform: translateZ(${pages/2}px)">
-                        </img>
+                        <div class="cover" style="width: 200px; height: ${bookHeight}px; transform: translateZ(${pages/2}px); background-color: ${book.cover_color}; display: flex; align-items: center; justify-content: center; color: ${book.cover_contrast}; padding: 20px; text-align: center; font-weight: bold;">
+                            ${book.title}
+                        </div>
                         <div class="spine" style="width: ${pages}px; height: ${bookHeight}px; background-color: ${book.cover_color || '#8B4513'}">
                             <div class="spinetext">
                                 <span class="title">${book.title || ''}</span>
