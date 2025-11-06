@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test</h1>
+    <div id="result"></div>
+    <script>
+        const url = window.location.origin + '/books.json?v=' + Date.now();
+        document.getElementById('result').innerHTML = `<p>Testing: ${url}</p>`;
+        
+        fetch(url)
+            .then(response => {
+                document.getElementById('result').innerHTML += `<p>Status: ${response.status}</p>`;
+                return response.text();
+            })
+            .then(text => {
+                document.getElementById('result').innerHTML += `<p>First 200 chars: <pre>${text.substring(0, 200)}</pre></p>`;
+                const json = JSON.parse(text);
+                document.getElementById('result').innerHTML += `<p style="color: green;">✓ Valid JSON! ${json.length} books found</p>`;
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML += `<p style="color: red;">ERROR: ${error.message}</p>`;
+            });
+    </script>
+</body>
+</html>
+

@@ -44,8 +44,8 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // Load and render books
-        fetch('/books.json')
+        // Load and render books (with cache busting)
+        fetch('/books.json?v=' + Date.now())
             .then(response => {
                 console.log('Response status:', response.status);
                 if (!response.ok) {
